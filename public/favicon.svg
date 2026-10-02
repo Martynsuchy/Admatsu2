@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Black rounded box / frame with subtle crisp hairline border -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#050811" stroke="#FFFFFF" stroke-width="2" stroke-opacity="0.35" />
+  <!-- White capital 'A' glyph matching Admatsu logo typography (Syne ExtraBold) -->
+  <g transform="translate(32, 32) scale(0.42) translate(-58, 32)">
+    <path fill="#FFFFFF" d="M91.80-9.70L23.40-9.70L23.40-24.70L91.80-24.70L91.80-9.70ZM28.50 0L1 0L43.90-64L71.70-64L115 0L87.50 0L50.40-57.30L65.30-57.30L28.50 0Z" />
+  </g>
+</svg>
