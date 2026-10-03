@@ -177,10 +177,11 @@ async function sendInquiryNotification(inquiry: InquiryData) {
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #060910; color: #f1f5f9; margin: 0; padding: 24px; }
     .container { max-width: 600px; margin: 0 auto; background-color: #0B101D; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-    .header { background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%); padding: 32px 28px; text-align: left; }
-    .badge { display: inline-block; background-color: rgba(0,0,0,0.25); color: #ffffff; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; margin-bottom: 12px; }
-    .header h1 { margin: 0; font-size: 24px; color: #ffffff; font-weight: 800; letter-spacing: -0.5px; }
+    .header { background-color: #070B14; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 28px 28px; text-align: left; }
+    .header-logo { font-size: 26px; font-weight: 900; letter-spacing: -0.6px; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1; }
+    .header-badge { margin-top: 8px; font-size: 11px; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 1.2px; }
     .body { padding: 30px 28px; font-size: 14px; line-height: 1.6; color: #cbd5e1; }
+    .subject-headline { font-size: 20px; font-weight: 800; color: #ffffff; letter-spacing: -0.3px; margin-bottom: 16px; }
     .intro-box { font-size: 15px; color: #f8fafc; margin-bottom: 22px; }
     .highlight-card { background: rgba(6, 182, 212, 0.08); border-left: 3px solid #06b6d4; padding: 14px 18px; border-radius: 0 10px 10px 0; margin-bottom: 24px; color: #e2e8f0; font-size: 14px; }
     .details-card { background-color: #050811; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
@@ -195,10 +196,13 @@ async function sendInquiryNotification(inquiry: InquiryData) {
 <body>
   <div class="container">
     <div class="header">
-      <div class="badge">${custHeaderBadge}</div>
-      <h1>${custTitle}</h1>
+      <div class="header-logo">Admatsu</div>
+      <div class="header-badge">${custHeaderBadge}</div>
     </div>
     <div class="body">
+      <!-- Title acting as unlabelled subject above greeting -->
+      <div class="subject-headline">${custTitle}</div>
+
       <div class="intro-box">${custIntro}</div>
       <div class="highlight-card">${custNextSteps}</div>
       <div class="details-card">
@@ -221,19 +225,39 @@ async function sendInquiryNotification(inquiry: InquiryData) {
         ` : ''}
       </div>
       <p style="font-size: 12px; color: #94a3b8; margin-bottom: 24px;">💡 ${custHelpText}</p>
-      <table cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; width: 100%;">
+
+      <!-- Horizontal Signature (Admatsu on left, separator, Martin Suchý on right, no blue line) -->
+      <table cellpadding="0" cellspacing="0" border="0" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.4; color: #f8fafc; border-collapse: collapse; margin-top: 26px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%;">
         <tr>
-          <td style="width: 3px; background-color: #06b6d4; border-radius: 2px;" valign="top"></td>
-          <td style="width: 12px;"></td>
-          <td valign="top" style="padding-top: 10px;">
-            <div style="font-size: 15px; font-weight: 700; color: #ffffff;">Martin Suchý</div>
-            <div style="font-size: 11px; font-weight: 600; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.6px; margin-top: 2px;">${custSignatureRole}</div>
-            <div style="margin-top: 8px; font-size: 12px; color: #cbd5e1; line-height: 1.5;">
-              <span style="color: #64748b;">M:</span> <a href="tel:+420604531377" style="color: #f1f5f9; text-decoration: none;">+420 604 531 377</a>
-              <span style="color: #475569; padding: 0 4px;">•</span>
-              <span style="color: #64748b;">E:</span> <a href="mailto:info@admatsu.com" style="color: #38bdf8; text-decoration: none;">info@admatsu.com</a>
+          <!-- Sloupec 1: Logo Admatsu nalevo -->
+          <td valign="middle" style="padding-right: 20px; text-align: left; white-space: nowrap;">
+            <div style="font-size: 24px; font-weight: 900; letter-spacing: -0.6px; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1;">
+              Admatsu
+            </div>
+          </td>
+
+          <!-- Svislá oddělovací linka -->
+          <td style="width: 1px; background-color: rgba(255,255,255,0.15);" valign="middle"></td>
+
+          <!-- Sloupec 2: Samotný podpis napravo -->
+          <td valign="middle" style="padding-left: 20px;">
+            <div style="font-size: 15px; font-weight: 800; color: #ffffff; letter-spacing: -0.2px;">
+              Martin Suchý
+            </div>
+            <div style="font-size: 11px; font-weight: 600; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.6px; margin-top: 1px;">
+              ${custSignatureRole}
+            </div>
+            <div style="margin-top: 6px; font-size: 12px; color: #cbd5e1; line-height: 1.5;">
+              <span style="color: #64748b; font-weight: 600;">M:</span> 
+              <a href="tel:+420604531377" style="color: #f1f5f9; text-decoration: none; font-weight: 600;">+420 604 531 377</a>
+              <span style="color: #06b6d4; padding: 0 6px; font-weight: bold;">•</span>
+              <span style="color: #64748b; font-weight: 600;">E:</span> 
+              <a href="mailto:info@admatsu.com" style="color: #38bdf8; text-decoration: none; font-weight: 600;">info@admatsu.com</a>
               <br>
-              <span style="color: #64748b;">W:</span> <a href="https://admatsu.com" target="_blank" style="color: #38bdf8; text-decoration: none; font-weight: 600;">admatsu.com</a>
+              <span style="color: #64748b; font-weight: 600;">W:</span> 
+              <a href="https://admatsu.com" target="_blank" style="color: #06b6d4; text-decoration: none; font-weight: 700;">admatsu.com</a>
+              <span style="color: #06b6d4; padding: 0 6px; font-weight: bold;">•</span>
+              <span style="color: #94a3b8; font-size: 11px;">Prague, Czechia · Remote EU</span>
             </div>
           </td>
         </tr>
