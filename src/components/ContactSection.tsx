@@ -135,6 +135,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ preloadedMessage
       message: formData.message || 'Poptávka odeslána z webového formuláře',
       estimatedPrice: 'Dle specifikace',
       notes: 'Odesláno přes hlavní kontaktní formulář na webu.',
+      lang: currentLang,
     });
 
     setTimeout(() => {

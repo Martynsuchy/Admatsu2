@@ -244,6 +244,7 @@ export interface LeadInquiry {
   message: string;
   status: 'new' | 'contacted' | 'in_progress' | 'quote_sent' | 'completed';
   notes?: string;
+  lang?: 'cs' | 'en' | 'de';
 }
 
 export interface CmsRevision {
