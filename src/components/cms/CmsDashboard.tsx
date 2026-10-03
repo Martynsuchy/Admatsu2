@@ -175,7 +175,10 @@ export const CmsDashboard: React.FC = () => {
             </button>
 
             <button
-              onClick={() => setViewMode('web')}
+              onClick={() => {
+                setViewMode('web');
+                triggerToast('Zobrazen čistý web. Pro návrat do CMS stiskněte Ctrl+Alt+A nebo zadejte /admin');
+              }}
               className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-500 px-4 py-1.5 text-xs font-semibold text-slate-950 hover:bg-cyan-400 transition-all cursor-pointer shadow-md shadow-cyan-500/20 active:scale-98"
             >
               <Eye className="h-3.5 w-3.5" />

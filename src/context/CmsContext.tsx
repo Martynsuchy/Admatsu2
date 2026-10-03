@@ -618,13 +618,25 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     try {
-      const auth = localStorage.getItem('admatsu_cms_auth');
-      return auth === 'true'; // Default to false so public visitors see no admin bars
+      if (typeof window !== 'undefined') {
+        const path = window.location.pathname.toLowerCase();
+        const hash = window.location.hash.toLowerCase();
+        const search = window.location.search.toLowerCase();
+        const isAdminRoute =
+          path === '/admin' ||
+          path.startsWith('/admin/') ||
+          hash === '#admin' ||
+          search.includes('admin');
+        if (isAdminRoute) {
+          return localStorage.getItem('admatsu_cms_auth') === 'true';
+        }
+      }
+      return false; // Default to false so public visitors never see admin bars
     } catch {
       return false;
     }
   });
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(true);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [lastSavedAt, setLastSavedAt] = useState<string>('Před chvílí');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -806,12 +818,32 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     let isMounted = true;
 
-    // Check URL for #admin or ?admin=true
-    if (typeof window !== 'undefined') {
-      if (window.location.hash === '#admin' || window.location.search.includes('admin=true')) {
-        setIsLoginModalOpen(true);
+    // Check URL for /admin, #admin or ?admin
+    const checkAdminUrl = () => {
+      if (typeof window === 'undefined') return;
+      const path = window.location.pathname.toLowerCase();
+      const hash = window.location.hash.toLowerCase();
+      const search = window.location.search.toLowerCase();
+      const isAdminRoute =
+        path === '/admin' ||
+        path.startsWith('/admin/') ||
+        hash === '#admin' ||
+        search.includes('admin');
+
+      if (isAdminRoute) {
+        const auth = localStorage.getItem('admatsu_cms_auth');
+        if (auth === 'true') {
+          setIsAuthenticated(true);
+          setViewMode('cms');
+        } else {
+          setIsLoginModalOpen(true);
+        }
       }
-    }
+    };
+
+    checkAdminUrl();
+    window.addEventListener('hashchange', checkAdminUrl);
+    window.addEventListener('popstate', checkAdminUrl);
 
     fetch('/api/content')
       .then((res) => res.json())
@@ -914,11 +946,30 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       })
       .catch(() => {});
 
-    // Admin shortcut: Ctrl+Shift+A or Alt+A
+    // Admin shortcut: Ctrl+Shift+A, Ctrl+Alt+A, Cmd+Shift+A, Cmd+Alt+A, or Alt+A
     const handleAdminKey = (e: KeyboardEvent) => {
-      if ((e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') || (e.altKey && e.key.toLowerCase() === 'a')) {
+      const target = e.target as HTMLElement | null;
+      const isInput = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable);
+      if (isInput) return;
+
+      const isA = e.key.toLowerCase() === 'a';
+      const isM = e.key.toLowerCase() === 'm';
+      const hasCtrlOrCmd = e.ctrlKey || e.metaKey;
+
+      // Match (Ctrl/Cmd + Shift + A/M), (Ctrl/Cmd + Alt + A/M), or (Alt + A)
+      const isShortcutTriggered =
+        (hasCtrlOrCmd && (e.shiftKey || e.altKey) && (isA || isM)) ||
+        (e.altKey && isA);
+
+      if (isShortcutTriggered) {
         e.preventDefault();
-        setIsLoginModalOpen(true);
+        const auth = localStorage.getItem('admatsu_cms_auth');
+        if (auth === 'true') {
+          setIsAuthenticated(true);
+          setViewMode((prev) => (prev === 'cms' ? 'web' : 'cms'));
+        } else {
+          setIsLoginModalOpen(true);
+        }
       }
     };
     window.addEventListener('keydown', handleAdminKey);
@@ -926,6 +977,8 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return () => {
       isMounted = false;
       window.removeEventListener('keydown', handleAdminKey);
+      window.removeEventListener('hashchange', checkAdminUrl);
+      window.removeEventListener('popstate', checkAdminUrl);
     };
   }, []);
 

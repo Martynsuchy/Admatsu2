@@ -38,8 +38,8 @@ export const CmsAdminBar: React.FC = () => {
         </div>
       )}
 
-      {/* Floating Top Admin Bar - Shown when logged in */}
-      {isAuthenticated ? (
+      {/* Admin Bar - Only shown in split mode or during active inline editing, never on public web view */}
+      {isAuthenticated && (viewMode === 'split' || isInlineEditing) ? (
         <div className="sticky top-0 z-[100] w-full border-b border-cyan-500/30 bg-[#060A13]/95 px-3 py-2 backdrop-blur-md text-xs text-slate-200 shadow-lg">
           <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 flex-wrap">
             {/* Left badge */}
