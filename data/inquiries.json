@@ -1,0 +1,40 @@
+[
+  {
+    "id": "lead-101",
+    "createdAt": "2026-09-25 10:14",
+    "name": "Jan Dvořák (Architektura Dvořák s.r.o.)",
+    "email": "dvorak@archdvorak.cz",
+    "phone": "+420 602 123 456",
+    "serviceType": "Kompletní předělání zastaralého webu",
+    "existingUrl": "https://archdvorak-stary.cz",
+    "estimatedPrice": "28 000 – 35 000 Kč",
+    "message": "Náš stávající web na WordPressu se na mobilu načítá 9 sekund a klienti si stěžují. Potřebujeme moderní portfolio a optimalizaci pro AI vyhledávače.",
+    "status": "new",
+    "notes": "Klientský web je extrémně pomalý (LCP 8.4s). Navrhnout přechod na čistý Next.js + GEO audit."
+  },
+  {
+    "id": "lead-102",
+    "createdAt": "2026-09-24 16:30",
+    "name": "Petra Novotná (Advokátní kancelář Novotná)",
+    "email": "novotna@ak-novotna.cz",
+    "phone": "+420 731 987 654",
+    "serviceType": "GEO & Technické SEO balíček",
+    "existingUrl": "https://ak-novotna.cz",
+    "estimatedPrice": "14 000 Kč",
+    "message": "Chceme, aby naši kancelář doporučovala Perplexity i ChatGPT při dotazech na právo nemovitostí v Praze.",
+    "status": "in_progress",
+    "notes": "Odeslán návrh strukturovaných entit Schema.org pro LegalService."
+  },
+  {
+    "id": "lead-103",
+    "createdAt": "2026-09-23 09:12",
+    "name": "Tomáš Kříž (TechLogix Solutions)",
+    "email": "kriz@techlogix.cz",
+    "phone": "+420 775 444 333",
+    "serviceType": "Firemní web na míru + Interaktivní kalkulačka",
+    "estimatedPrice": "42 000 Kč",
+    "message": "Poptávka po prezentačním webu s integrovanou interaktivní kalkulačkou úspor pro B2B klienty.",
+    "status": "quote_sent",
+    "notes": "Cenová nabídka odeslána 23.9., klient má schvalovací radu v pátek."
+  }
+]

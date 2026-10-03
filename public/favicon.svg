@@ -1,8 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <!-- Black rounded box / frame with subtle crisp hairline border -->
-  <rect x="2" y="2" width="60" height="60" rx="14" fill="#050811" stroke="#FFFFFF" stroke-width="2" stroke-opacity="0.35" />
-  <!-- White capital 'A' glyph matching Admatsu logo typography (Syne ExtraBold) -->
-  <g transform="translate(32, 32) scale(0.42) translate(-58, 32)">
-    <path fill="#FFFFFF" d="M91.80-9.70L23.40-9.70L23.40-24.70L91.80-24.70L91.80-9.70ZM28.50 0L1 0L43.90-64L71.70-64L115 0L87.50 0L50.40-57.30L65.30-57.30L28.50 0Z" />
-  </g>
+  <defs>
+    <linearGradient id="badgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0D1322" />
+      <stop offset="100%" stop-color="#050811" />
+    </linearGradient>
+  </defs>
+  <!-- Background: Deep obsidian rounded square with crisp hairline border -->
+  <rect x="3" y="3" width="58" height="58" rx="14" fill="url(#badgeGrad)" stroke="#FFFFFF" stroke-width="2" stroke-opacity="0.35" />
+  
+  <!-- Outer 'A' contour + Inner counter (hole) using evenodd fill rule -->
+  <path fill="#FFFFFF" fill-rule="evenodd" d="
+    M 30.2 13.5
+    L 33.8 13.5
+    L 50.5 50.5
+    L 42.8 50.5
+    L 38.3 40.2
+    L 25.7 40.2
+    L 21.2 50.5
+    L 13.5 50.5
+    Z
+    M 32.0 23.2
+    L 36.2 33.8
+    L 27.8 33.8
+    Z
+  " />
 </svg>

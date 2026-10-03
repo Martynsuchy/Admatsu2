@@ -50,16 +50,19 @@
   animation: cyan-wave-float 6s ease-in-out infinite;
 }
 
-/* Organic liquid water ripple undulations */
+/* Perfectly seamless harmonic liquid water ripple undulations */
 @keyframes liquid-ripple-a {
   0% {
     transform: translate3d(0, 0, 0) scaleY(1) skewX(0deg);
   }
-  33% {
-    transform: translate3d(-14px, -6px, 0) scaleY(1.1) skewX(-2deg);
+  25% {
+    transform: translate3d(14px, 4px, 0) scaleY(1.08) skewX(1.5deg);
   }
-  66% {
-    transform: translate3d(12px, 5px, 0) scaleY(0.92) skewX(2deg);
+  50% {
+    transform: translate3d(0, 0, 0) scaleY(1) skewX(0deg);
+  }
+  75% {
+    transform: translate3d(-14px, -4px, 0) scaleY(0.92) skewX(-1.5deg);
   }
   100% {
     transform: translate3d(0, 0, 0) scaleY(1) skewX(0deg);
@@ -68,16 +71,19 @@
 
 @keyframes liquid-ripple-b {
   0% {
-    transform: translate3d(0, 0, 0) scaleY(1.06) skewX(1.5deg);
+    transform: translate3d(0, 0, 0) scaleY(1) skewX(0deg);
   }
-  40% {
-    transform: translate3d(16px, 6px, 0) scaleY(0.92) skewX(-2deg);
+  25% {
+    transform: translate3d(-12px, -3px, 0) scaleY(0.93) skewX(-1.2deg);
+  }
+  50% {
+    transform: translate3d(0, 0, 0) scaleY(1) skewX(0deg);
   }
   75% {
-    transform: translate3d(-12px, -5px, 0) scaleY(1.12) skewX(1deg);
+    transform: translate3d(12px, 3px, 0) scaleY(1.07) skewX(1.2deg);
   }
   100% {
-    transform: translate3d(0, 0, 0) scaleY(1.06) skewX(1.5deg);
+    transform: translate3d(0, 0, 0) scaleY(1) skewX(0deg);
   }
 }
 

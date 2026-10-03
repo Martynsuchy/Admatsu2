@@ -449,7 +449,7 @@ const DEFAULT_CONTENT: SiteContent = {
   },
   contact: {
     companyName: 'ADMATSU s.r.o.',
-    email: 'info@admatsu.cz',
+    email: 'info@admatsu.com',
     phone: '',
     address: 'Korunní 2569/108, Vinohrady',
     city: '101 00 Praha 10',
@@ -624,7 +624,7 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return false;
     }
   });
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(true);
   const [lastSavedAt, setLastSavedAt] = useState<string>('Před chvílí');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -673,7 +673,7 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     } else if (lang === 'de') {
       document.title = 'Admatsu – Moderne Webentwicklung, Technisches SEO & GEO';
     } else {
-      document.title = 'Admatsu s.r.o. – Moderní tvorba webů, SEO a GEO optimalizace';
+      document.title = 'Admatsu – Moderní tvorba webů, SEO a GEO optimalizace';
     }
   };
 
@@ -1116,7 +1116,17 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     setInquiries((prev) => [newInquiry, ...prev]);
-    triggerToast(`📩 Nová poptávka od "${newInquiry.name}" přišla do CMS!`);
+
+    // Send email notification to info@admatsu.com via server
+    fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newInquiry),
+    }).catch((err) => {
+      console.warn('Could not dispatch email notification endpoint:', err);
+    });
+
+    triggerToast(`📩 Nová poptávka od "${newInquiry.name}" přišla do CMS a odeslána na info@admatsu.com!`);
   };
 
   const updateInquiryStatus = (id: string, status: LeadInquiry['status'], notes?: string) => {

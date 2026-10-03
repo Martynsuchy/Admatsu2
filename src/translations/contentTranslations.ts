@@ -463,7 +463,7 @@ export const ENGLISH_CONTENT: SiteContent = {
   },
   contact: {
     companyName: 'ADMATSU s.r.o.',
-    email: 'info@admatsu.cz',
+    email: 'info@admatsu.com',
     phone: '',
     address: 'Korunní 2569/108, Vinohrady',
     city: '101 00 Prague 10, Czech Republic',
@@ -964,7 +964,7 @@ export const GERMAN_CONTENT: SiteContent = {
   },
   contact: {
     companyName: 'ADMATSU s.r.o.',
-    email: 'info@admatsu.cz',
+    email: 'info@admatsu.com',
     phone: '',
     address: 'Korunní 2569/108, Vinohrady',
     city: '101 00 Prag 10, Tschechische Republik',

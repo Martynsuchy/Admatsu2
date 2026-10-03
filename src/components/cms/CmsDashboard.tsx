@@ -115,7 +115,7 @@ export const CmsDashboard: React.FC = () => {
     '@type': content.geoSeo.schemaOrgType,
     name: content.contact.companyName,
     description: content.geoSeo.metaDescription,
-    url: 'https://admatsu.cz',
+    url: 'https://admatsu.com',
     telephone: content.contact.phone,
     email: content.contact.email,
     address: {
@@ -2076,7 +2076,7 @@ export const CmsDashboard: React.FC = () => {
                     <Search className="h-4 w-4 text-cyan-400" />
                   </div>
                   <div className="space-y-1 p-4 rounded-lg bg-black/60 border border-white/5">
-                    <div className="text-[11px] text-slate-400 font-mono">https://admatsu.cz</div>
+                    <div className="text-[11px] text-slate-400 font-mono">https://admatsu.com</div>
                     <div className="text-sm font-semibold text-blue-400 hover:underline cursor-pointer">
                       {content.geoSeo.metaTitle}
                     </div>
@@ -2109,7 +2109,7 @@ export const CmsDashboard: React.FC = () => {
                     <div className="flex items-center gap-2 pt-1 text-[10px] text-cyan-400 font-mono">
                       <span>Zdroj citace:</span>
                       <span className="rounded bg-cyan-950 px-2 py-0.5 border border-cyan-500/30">
-                        admatsu.cz [Schema.org verified]
+                        admatsu.com [Schema.org verified]
                       </span>
                     </div>
                   </div>

@@ -142,7 +142,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                       <p><strong className="text-white font-sans">IČO:</strong> 21394555</p>
                       <p><strong className="text-white font-sans">Sídlo:</strong> Korunní 2569/108, Vinohrady, 101 00 Praha 10</p>
                       <p><strong className="text-white font-sans">Spisová značka:</strong> C 400085 vedená u Městského soudu v Praze</p>
-                      <p><strong className="text-white font-sans">E-mail:</strong> info@admatsu.cz</p>
+                      <p><strong className="text-white font-sans">E-mail:</strong> info@admatsu.com</p>
                     </div>
                   </div>
 
@@ -180,7 +180,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                       5. Vaše práva podle GDPR
                     </h3>
                     <p className="text-slate-300">
-                      Máte právo na přístup, opravu, výmaz i omezení zpracování svých údajů. Svá práva můžete uplatnit na <a href="mailto:info@admatsu.cz" className="text-cyan-400 hover:underline">info@admatsu.cz</a>. Dozorovým úřadem je Úřad pro ochranu osobních údajů (ÚOOÚ), Pplk. Sochora 27, Praha 7.
+                      Máte právo na přístup, opravu, výmaz i omezení zpracování svých údajů. Svá práva můžete uplatnit na <a href="mailto:info@admatsu.com" className="text-cyan-400 hover:underline">info@admatsu.com</a>. Dozorovým úřadem je Úřad pro ochranu osobních údajů (ÚOOÚ), Pplk. Sochora 27, Praha 7.
                     </p>
                   </div>
                 </>
@@ -201,7 +201,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                       <p><strong className="text-white font-sans">Company ID:</strong> 21394555</p>
                       <p><strong className="text-white font-sans">Registered Office:</strong> Korunní 2569/108, Vinohrady, 101 00 Prague 10, Czech Republic</p>
                       <p><strong className="text-white font-sans">Commercial Register:</strong> File C 400085 maintained by the Municipal Court in Prague</p>
-                      <p><strong className="text-white font-sans">Email:</strong> info@admatsu.cz</p>
+                      <p><strong className="text-white font-sans">Email:</strong> info@admatsu.com</p>
                     </div>
                   </div>
 
@@ -239,7 +239,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                       5. Your Rights Under GDPR
                     </h3>
                     <p className="text-slate-300">
-                      You maintain full rights to access, rectify, restrict, or erase your personal data. You may exercise your rights anytime by contacting us at <a href="mailto:info@admatsu.cz" className="text-cyan-400 hover:underline">info@admatsu.cz</a>.
+                      You maintain full rights to access, rectify, restrict, or erase your personal data. You may exercise your rights anytime by contacting us at <a href="mailto:info@admatsu.com" className="text-cyan-400 hover:underline">info@admatsu.com</a>.
                     </p>
                   </div>
                 </>
@@ -260,7 +260,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                       <p><strong className="text-white font-sans">IdNr. (IČO):</strong> 21394555</p>
                       <p><strong className="text-white font-sans">Sitz:</strong> Korunní 2569/108, Vinohrady, 101 00 Prag 10, Tschechische Republik</p>
                       <p><strong className="text-white font-sans">Handelsregister:</strong> Aktenzeichen C 400085 beim Stadtgericht Prag</p>
-                      <p><strong className="text-white font-sans">E-Mail:</strong> info@admatsu.cz</p>
+                      <p><strong className="text-white font-sans">E-Mail:</strong> info@admatsu.com</p>
                     </div>
                   </div>
 
@@ -298,7 +298,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                       5. Ihre Rechte gemäß DSGVO
                     </h3>
                     <p className="text-slate-300">
-                      Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung. Wenden Sie sich hierzu einfach an <a href="mailto:info@admatsu.cz" className="text-cyan-400 hover:underline">info@admatsu.cz</a>.
+                      Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung. Wenden Sie sich hierzu einfach an <a href="mailto:info@admatsu.com" className="text-cyan-400 hover:underline">info@admatsu.com</a>.
                     </p>
                   </div>
                 </>
@@ -486,7 +486,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
         {/* Modal Footer */}
         <div className="flex items-center justify-between px-6 py-4 border-t border-white/10 bg-[#0B101D] text-xs">
           <span className="text-slate-400">
-            {labels.questionNotice} <a href="mailto:info@admatsu.cz" className="text-cyan-400 hover:underline">info@admatsu.cz</a>
+            {labels.questionNotice} <a href="mailto:info@admatsu.com" className="text-cyan-400 hover:underline">info@admatsu.com</a>
           </span>
           <button
             onClick={onClose}

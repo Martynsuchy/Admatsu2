@@ -3,10 +3,11 @@ import { useCms } from '../context/CmsContext';
 import { EditableText } from './cms/EditableText';
 import { LegalModal, LegalDocType } from './LegalModal';
 import { scrollToTarget } from '../utils/scrollHelper';
+import { Lock } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const currentYear = 2026;
-  const { content, updateFooter, updateContact, isInlineEditing, currentLang } = useCms();
+  const { content, updateFooter, updateContact, isInlineEditing, currentLang, setIsLoginModalOpen, isAuthenticated } = useCms();
   const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
   const [legalModalTab, setLegalModalTab] = useState<LegalDocType>('privacy');
 
@@ -201,6 +202,18 @@ export const Footer: React.FC = () => {
                 label="Patička: Podmínky"
               />
             </button>
+
+            {!isAuthenticated && (
+              <button
+                type="button"
+                onClick={() => setIsLoginModalOpen(true)}
+                className="hover:text-cyan-300 transition-colors cursor-pointer inline-flex items-center gap-1.5 text-slate-500 hover:bg-white/5 px-2 py-1 rounded"
+                title="Otevřít přihlašovací okno do administrace webu"
+              >
+                <Lock className="h-3 w-3 text-cyan-400/70" />
+                <span>Správa webu</span>
+              </button>
+            )}
           </div>
         </div>
 

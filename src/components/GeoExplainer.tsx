@@ -26,72 +26,60 @@ export const GeoExplainer: React.FC = () => {
 
   const simLabels = simulatorUiLabels[currentLang] || simulatorUiLabels.cs;
 
+  const comparisonGridRef = useRef<HTMLDivElement>(null);
+  const unifiedWaveRef = useRef<HTMLDivElement>(null);
+  const unifiedSecondaryWaveRef = useRef<HTMLDivElement>(null);
   const seoCardRef = useRef<HTMLDivElement>(null);
-  const seoWaveRef = useRef<HTMLDivElement>(null);
-  const seoSecondaryWaveRef = useRef<HTMLDivElement>(null);
   const geoCardRef = useRef<HTMLDivElement>(null);
-  const geoWaveRef = useRef<HTMLDivElement>(null);
-  const geoSecondaryWaveRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let ticking = false;
 
-    const updateCardWave = (
-      card: HTMLDivElement | null,
-      primaryWave: HTMLDivElement | null,
-      secondaryWave: HTMLDivElement | null,
-      color: 'emerald' | 'cyan'
-    ) => {
-      if (!card || !primaryWave) return;
-      const rect = card.getBoundingClientRect();
-      const vh = window.innerHeight || 800;
-
-      // Check if card is visible or near viewport
-      if (rect.bottom > -100 && rect.top < vh + 100) {
-        const totalDistance = vh + rect.height;
-        const currentPos = vh - rect.top;
-        const progress = Math.min(Math.max(currentPos / totalDistance, 0), 1);
-
-        // Dynamically compute travel across the ENTIRE card height in pixels:
-        // Expanded wave height for a fuller liquid swell
-        const cardH = rect.height;
-        const waveH = 320;
-        const startY = -waveH * 0.75; // Start safely above top
-        const endY = cardH + waveH * 0.4; // End safely below bottom
-        const currentY = (startY + progress * (endY - startY)).toFixed(1);
-
-        const intensity = Math.sin(progress * Math.PI);
-        const clampedIntensity = Math.max(0, Math.min(intensity, 1));
-
-        // Water wave 1: deep glowing liquid swell with balanced saturation
-        primaryWave.style.transform = `translate3d(0, ${currentY}px, 0)`;
-        primaryWave.style.opacity = (0.30 + clampedIntensity * 0.30).toFixed(3);
-
-        // Water wave 2: fluid counter-ripple following 95px behind
-        if (secondaryWave) {
-          const secondaryY = (parseFloat(currentY) - 95).toFixed(1);
-          secondaryWave.style.transform = `translate3d(0, ${secondaryY}px, 0)`;
-          secondaryWave.style.opacity = (0.24 + clampedIntensity * 0.25).toFixed(3);
-        }
-
-        // Luminous water-edge card illumination with refined saturation
-        if (color === 'cyan') {
-          const alpha = (0.20 + clampedIntensity * 0.22).toFixed(3);
-          card.style.borderColor = `rgba(6, 182, 212, ${alpha})`;
-          card.style.boxShadow = `0 0 ${14 + clampedIntensity * 16}px rgba(6, 182, 212, ${(0.05 + clampedIntensity * 0.08).toFixed(3)}), inset 0 0 14px rgba(6, 182, 212, ${(0.02 + clampedIntensity * 0.04).toFixed(3)})`;
-        } else {
-          const alpha = (0.20 + clampedIntensity * 0.22).toFixed(3);
-          card.style.borderColor = `rgba(16, 185, 129, ${alpha})`;
-          card.style.boxShadow = `0 0 ${14 + clampedIntensity * 16}px rgba(16, 185, 129, ${(0.05 + clampedIntensity * 0.08).toFixed(3)}), inset 0 0 14px rgba(16, 185, 129, ${(0.02 + clampedIntensity * 0.04).toFixed(3)})`;
-        }
-      }
-    };
-
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          updateCardWave(seoCardRef.current, seoWaveRef.current, seoSecondaryWaveRef.current, 'emerald');
-          updateCardWave(geoCardRef.current, geoWaveRef.current, geoSecondaryWaveRef.current, 'cyan');
+          if (!comparisonGridRef.current || !unifiedWaveRef.current) {
+            ticking = false;
+            return;
+          }
+          const rect = comparisonGridRef.current.getBoundingClientRect();
+          const vh = window.innerHeight || 800;
+
+          // Single continuous progress across the whole comparison section
+          const totalDistance = vh + rect.height;
+          const currentPos = vh - rect.top;
+          const progress = Math.min(Math.max(currentPos / totalDistance, 0), 1);
+
+          // Travel from top bleed to bottom bleed
+          const gridH = rect.height;
+          const waveH = 460;
+          const startY = -waveH * 0.75;
+          const endY = gridH + waveH * 0.35;
+          const currentY = (startY + progress * (endY - startY)).toFixed(1);
+
+          const intensity = Math.sin(progress * Math.PI);
+          const clampedIntensity = Math.max(0, Math.min(intensity, 1));
+
+          unifiedWaveRef.current.style.transform = `translate3d(0, ${currentY}px, 0)`;
+          unifiedWaveRef.current.style.opacity = (0.42 + clampedIntensity * 0.36).toFixed(3);
+
+          if (unifiedSecondaryWaveRef.current) {
+            const secondaryY = (parseFloat(currentY) - 120).toFixed(1);
+            unifiedSecondaryWaveRef.current.style.transform = `translate3d(0, ${secondaryY}px, 0)`;
+            unifiedSecondaryWaveRef.current.style.opacity = (0.30 + clampedIntensity * 0.30).toFixed(3);
+          }
+
+          // Harmonized card borders and glows
+          const alpha = (0.22 + clampedIntensity * 0.22).toFixed(3);
+          if (seoCardRef.current) {
+            seoCardRef.current.style.borderColor = `rgba(16, 185, 129, ${alpha})`;
+            seoCardRef.current.style.boxShadow = `0 0 ${(14 + clampedIntensity * 16).toFixed(1)}px rgba(16, 185, 129, ${(0.05 + clampedIntensity * 0.08).toFixed(3)})`;
+          }
+          if (geoCardRef.current) {
+            geoCardRef.current.style.borderColor = `rgba(6, 182, 212, ${alpha})`;
+            geoCardRef.current.style.boxShadow = `0 0 ${(14 + clampedIntensity * 16).toFixed(1)}px rgba(6, 182, 212, ${(0.05 + clampedIntensity * 0.08).toFixed(3)})`;
+          }
+
           ticking = false;
         });
         ticking = true;
@@ -200,119 +188,123 @@ export const GeoExplainer: React.FC = () => {
           />
         </div>
 
-        {/* Comparison Grid: SEO vs GEO side-by-side */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-          
-          {/* Classic SEO Box */}
+        {/* Comparison Grid: Single Master Wave Permeating Both SEO & GEO in Height and Width */}
+        <div ref={comparisonGridRef} className="relative mb-16 rounded-2xl overflow-hidden p-1 sm:p-2">
+          {/* Master Liquid Wave Background: Permeates through both cards */}
           <div 
-            ref={seoCardRef}
-            className="rounded-xl bg-[#0B101D] p-6 sm:p-8 relative overflow-hidden flex flex-col justify-between transition-colors duration-300"
-            style={{
-              borderWidth: '1px',
-              borderStyle: 'solid',
-              borderColor: 'rgba(16, 185, 129, 0.2)',
-            }}
+            className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl"
+            aria-hidden="true"
           >
-            {/* Dynamic Scroll-Reactive Emerald Water Waves (efekt tekoucí a vlnící se vody) */}
+            {/* Primary master water swell */}
             <div 
-              className="pointer-events-none absolute inset-0 overflow-hidden rounded-xl"
-              aria-hidden="true"
+              ref={unifiedWaveRef}
+              className="absolute -inset-x-12 h-[460px] pointer-events-none will-change-transform transition-transform duration-150 ease-out"
+              style={{
+                top: '0px',
+                transform: 'translate3d(0, -320px, 0)',
+              }}
             >
-              {/* Primary liquid water swell with organic ripple */}
-              <div 
-                ref={seoWaveRef}
-                className="absolute -inset-x-12 h-[340px] pointer-events-none will-change-transform"
-                style={{
-                  top: '0px',
-                  transform: 'translate3d(0, -180px, 0)',
-                }}
-              >
-                <div className="w-full h-full animate-liquid-1 relative">
-                  {/* Glowing liquid water body */}
-                  <svg viewBox="0 0 1000 320" preserveAspectRatio="none" className="w-full h-full filter blur-2xl">
-                    <defs>
-                      <linearGradient id="seoWaterGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#047857" stopOpacity="0.06" />
-                        <stop offset="25%" stopColor="#10B981" stopOpacity="0.38" />
-                        <stop offset="55%" stopColor="#34D399" stopOpacity="0.44" />
-                        <stop offset="85%" stopColor="#059669" stopOpacity="0.32" />
-                        <stop offset="100%" stopColor="#047857" stopOpacity="0.08" />
-                      </linearGradient>
-                    </defs>
-                    <path 
-                      d="M-50,85 C70,40 180,125 310,75 C440,25 560,120 700,65 C840,10 960,105 1060,65 L1060,320 L-50,320 Z" 
-                      fill="url(#seoWaterGrad1)" 
-                    />
-                  </svg>
-                  {/* Subtle translucent water surface shimmer */}
-                  <svg viewBox="0 0 1000 320" preserveAspectRatio="none" className="w-full h-full absolute inset-0 filter blur-sm opacity-55">
-                    <defs>
-                      <linearGradient id="seoWaterSurface1" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#10B981" stopOpacity="0" />
-                        <stop offset="30%" stopColor="#6EE7B7" stopOpacity="0.65" />
-                        <stop offset="65%" stopColor="#34D399" stopOpacity="0.7" />
-                        <stop offset="100%" stopColor="#059669" stopOpacity="0" />
-                      </linearGradient>
-                    </defs>
-                    <path 
-                      d="M-50,85 C70,40 180,125 310,75 C440,25 560,120 700,65 C840,10 960,105 1060,65" 
-                      fill="none" 
-                      stroke="url(#seoWaterSurface1)" 
-                      strokeWidth="3" 
-                      strokeLinecap="round" 
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Secondary liquid water wave following behind with counter-undulation */}
-              <div 
-                ref={seoSecondaryWaveRef}
-                className="absolute -inset-x-12 h-[300px] pointer-events-none will-change-transform"
-                style={{
-                  top: '0px',
-                  transform: 'translate3d(0, -275px, 0)',
-                }}
-              >
-                <div className="w-full h-full animate-liquid-2 relative">
-                  {/* Deeper liquid layer */}
-                  <svg viewBox="0 0 1000 320" preserveAspectRatio="none" className="w-full h-full filter blur-2xl">
-                    <defs>
-                      <linearGradient id="seoWaterGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#065F46" stopOpacity="0.05" />
-                        <stop offset="35%" stopColor="#059669" stopOpacity="0.32" />
-                        <stop offset="70%" stopColor="#10B981" stopOpacity="0.3" />
-                        <stop offset="100%" stopColor="#047857" stopOpacity="0.08" />
-                      </linearGradient>
-                    </defs>
-                    <path 
-                      d="M-50,95 C90,140 220,55 360,115 C500,175 640,50 780,105 C920,160 1000,60 1060,95 L1060,320 L-50,320 Z" 
-                      fill="url(#seoWaterGrad2)" 
-                    />
-                  </svg>
-                  {/* Delicate water ripple line */}
-                  <svg viewBox="0 0 1000 320" preserveAspectRatio="none" className="w-full h-full absolute inset-0 filter blur-sm opacity-45">
-                    <defs>
-                      <linearGradient id="seoWaterSurface2" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#059669" stopOpacity="0" />
-                        <stop offset="40%" stopColor="#34D399" stopOpacity="0.55" />
-                        <stop offset="80%" stopColor="#6EE7B7" stopOpacity="0.5" />
-                        <stop offset="100%" stopColor="#047857" stopOpacity="0" />
-                      </linearGradient>
-                    </defs>
-                    <path 
-                      d="M-50,95 C90,140 220,55 360,115 C500,175 640,50 780,105 C920,160 1000,60 1060,95" 
-                      fill="none" 
-                      stroke="url(#seoWaterSurface2)" 
-                      strokeWidth="2.5" 
-                      strokeLinecap="round" 
-                    />
-                  </svg>
-                </div>
+              <div className="w-full h-full animate-liquid-1 relative">
+                {/* Glowing liquid water body: Emerald -> Teal -> Cyan -> Blue */}
+                <svg viewBox="0 0 1200 460" preserveAspectRatio="none" className="w-full h-full filter blur-xl">
+                  <defs>
+                    <linearGradient id="masterWaterGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#047857" stopOpacity="0.12" />
+                      <stop offset="25%" stopColor="#10B981" stopOpacity="0.50" />
+                      <stop offset="50%" stopColor="#14B8A6" stopOpacity="0.55" />
+                      <stop offset="75%" stopColor="#06B6D4" stopOpacity="0.52" />
+                      <stop offset="100%" stopColor="#2563EB" stopOpacity="0.16" />
+                    </linearGradient>
+                  </defs>
+                  <path 
+                    d="M-50,110 C150,40 350,180 600,105 C850,30 1050,170 1250,105 L1250,460 L-50,460 Z" 
+                    fill="url(#masterWaterGrad1)" 
+                  />
+                </svg>
+                {/* Translucent water surface shimmer */}
+                <svg viewBox="0 0 1200 460" preserveAspectRatio="none" className="w-full h-full absolute inset-0 filter blur-sm opacity-65">
+                  <defs>
+                    <linearGradient id="masterWaterSurface1" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#10B981" stopOpacity="0.15" />
+                      <stop offset="30%" stopColor="#34D399" stopOpacity="0.80" />
+                      <stop offset="50%" stopColor="#2DD4BF" stopOpacity="0.90" />
+                      <stop offset="70%" stopColor="#67E8F9" stopOpacity="0.85" />
+                      <stop offset="100%" stopColor="#60A5FA" stopOpacity="0.25" />
+                    </linearGradient>
+                  </defs>
+                  <path 
+                    d="M-50,110 C150,40 350,180 600,105 C850,30 1050,170 1250,105" 
+                    fill="none" 
+                    stroke="url(#masterWaterSurface1)" 
+                    strokeWidth="3.5" 
+                    strokeLinecap="round" 
+                  />
+                </svg>
               </div>
             </div>
 
-            <div className="space-y-6 relative z-10">
+            {/* Secondary liquid water wave following behind */}
+            <div 
+              ref={unifiedSecondaryWaveRef}
+              className="absolute -inset-x-12 h-[400px] pointer-events-none will-change-transform transition-transform duration-150 ease-out"
+              style={{
+                top: '0px',
+                transform: 'translate3d(0, -440px, 0)',
+              }}
+            >
+              <div className="w-full h-full animate-liquid-2 relative">
+                {/* Deeper liquid layer */}
+                <svg viewBox="0 0 1200 460" preserveAspectRatio="none" className="w-full h-full filter blur-xl">
+                  <defs>
+                    <linearGradient id="masterWaterGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#065F46" stopOpacity="0.08" />
+                      <stop offset="35%" stopColor="#059669" stopOpacity="0.38" />
+                      <stop offset="50%" stopColor="#0D9488" stopOpacity="0.42" />
+                      <stop offset="75%" stopColor="#0284C7" stopOpacity="0.40" />
+                      <stop offset="100%" stopColor="#1E40AF" stopOpacity="0.10" />
+                    </linearGradient>
+                  </defs>
+                  <path 
+                    d="M-50,140 C180,70 380,210 600,135 C820,60 1020,190 1250,125 L1250,460 L-50,460 Z" 
+                    fill="url(#masterWaterGrad2)" 
+                  />
+                </svg>
+                {/* Delicate water ripple line */}
+                <svg viewBox="0 0 1200 460" preserveAspectRatio="none" className="w-full h-full absolute inset-0 filter blur-sm opacity-50">
+                  <defs>
+                    <linearGradient id="masterWaterSurface2" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#059669" stopOpacity="0.15" />
+                      <stop offset="40%" stopColor="#2DD4BF" stopOpacity="0.70" />
+                      <stop offset="75%" stopColor="#38BDF8" stopOpacity="0.70" />
+                      <stop offset="100%" stopColor="#1E40AF" stopOpacity="0.15" />
+                    </linearGradient>
+                  </defs>
+                  <path 
+                    d="M-50,140 C180,70 380,210 600,135 C820,60 1020,190 1250,125" 
+                    fill="none" 
+                    stroke="url(#masterWaterSurface2)" 
+                    strokeWidth="3" 
+                    strokeLinecap="round" 
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          {/* Cards Grid: Frosted glass letting the master wave permeate through both cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-10">
+            
+            {/* Classic SEO Box */}
+            <div 
+              ref={seoCardRef}
+              className="rounded-xl bg-[#0B101D]/80 backdrop-blur-xl p-6 sm:p-8 relative flex flex-col justify-between transition-colors duration-300 shadow-xl"
+              style={{
+                borderWidth: '1px',
+                borderStyle: 'solid',
+                borderColor: 'rgba(16, 185, 129, 0.22)',
+              }}
+            >
+              <div className="space-y-6 relative z-10">
               {/* 1. Hlavička (ikona + nadpis + podtitulek) */}
               <div className="pb-4 border-b border-white/5">
                 <div className="flex items-center gap-3">
@@ -394,112 +386,13 @@ export const GeoExplainer: React.FC = () => {
           {/* GEO Box */}
           <div 
             ref={geoCardRef}
-            className="rounded-xl bg-[#0B101D] p-6 sm:p-8 relative overflow-hidden flex flex-col justify-between transition-colors duration-300"
+            className="rounded-xl bg-[#0B101D]/80 backdrop-blur-xl p-6 sm:p-8 relative flex flex-col justify-between transition-colors duration-300 shadow-xl"
             style={{
               borderWidth: '1px',
               borderStyle: 'solid',
-              borderColor: 'rgba(6, 182, 212, 0.2)',
+              borderColor: 'rgba(6, 182, 212, 0.22)',
             }}
           >
-            {/* Dynamic Scroll-Reactive Cyan Water Waves (efekt tekoucí a vlnící se vody) */}
-            <div 
-              className="pointer-events-none absolute inset-0 overflow-hidden rounded-xl"
-              aria-hidden="true"
-            >
-              {/* Primary liquid water swell with organic ripple */}
-              <div 
-                ref={geoWaveRef}
-                className="absolute -inset-x-12 h-[340px] pointer-events-none will-change-transform"
-                style={{
-                  top: '0px',
-                  transform: 'translate3d(0, -180px, 0)',
-                }}
-              >
-                <div className="w-full h-full animate-liquid-1 relative">
-                  {/* Glowing liquid water body */}
-                  <svg viewBox="0 0 1000 320" preserveAspectRatio="none" className="w-full h-full filter blur-2xl">
-                    <defs>
-                      <linearGradient id="geoWaterGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#0284C7" stopOpacity="0.06" />
-                        <stop offset="25%" stopColor="#06B6D4" stopOpacity="0.42" />
-                        <stop offset="55%" stopColor="#38BDF8" stopOpacity="0.48" />
-                        <stop offset="85%" stopColor="#0EA5E9" stopOpacity="0.36" />
-                        <stop offset="100%" stopColor="#2563EB" stopOpacity="0.10" />
-                      </linearGradient>
-                    </defs>
-                    <path 
-                      d="M-50,85 C70,40 180,125 310,75 C440,25 560,120 700,65 C840,10 960,105 1060,65 L1060,320 L-50,320 Z" 
-                      fill="url(#geoWaterGrad1)" 
-                    />
-                  </svg>
-                  {/* Subtle translucent water surface shimmer */}
-                  <svg viewBox="0 0 1000 320" preserveAspectRatio="none" className="w-full h-full absolute inset-0 filter blur-sm opacity-60">
-                    <defs>
-                      <linearGradient id="geoWaterSurface1" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#0284C7" stopOpacity="0" />
-                        <stop offset="30%" stopColor="#67E8F9" stopOpacity="0.7" />
-                        <stop offset="65%" stopColor="#38BDF8" stopOpacity="0.75" />
-                        <stop offset="100%" stopColor="#2563EB" stopOpacity="0" />
-                      </linearGradient>
-                    </defs>
-                    <path 
-                      d="M-50,85 C70,40 180,125 310,75 C440,25 560,120 700,65 C840,10 960,105 1060,65" 
-                      fill="none" 
-                      stroke="url(#geoWaterSurface1)" 
-                      strokeWidth="3" 
-                      strokeLinecap="round" 
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Secondary liquid water wave following behind with counter-undulation */}
-              <div 
-                ref={geoSecondaryWaveRef}
-                className="absolute -inset-x-12 h-[300px] pointer-events-none will-change-transform"
-                style={{
-                  top: '0px',
-                  transform: 'translate3d(0, -275px, 0)',
-                }}
-              >
-                <div className="w-full h-full animate-liquid-2 relative">
-                  {/* Deeper liquid layer */}
-                  <svg viewBox="0 0 1000 320" preserveAspectRatio="none" className="w-full h-full filter blur-2xl">
-                    <defs>
-                      <linearGradient id="geoWaterGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#1E40AF" stopOpacity="0.05" />
-                        <stop offset="35%" stopColor="#0284C7" stopOpacity="0.36" />
-                        <stop offset="70%" stopColor="#06B6D4" stopOpacity="0.34" />
-                        <stop offset="100%" stopColor="#0369A1" stopOpacity="0.08" />
-                      </linearGradient>
-                    </defs>
-                    <path 
-                      d="M-50,95 C90,140 220,55 360,115 C500,175 640,50 780,105 C920,160 1000,60 1060,95 L1060,320 L-50,320 Z" 
-                      fill="url(#geoWaterGrad2)" 
-                    />
-                  </svg>
-                  {/* Delicate water ripple line */}
-                  <svg viewBox="0 0 1000 320" preserveAspectRatio="none" className="w-full h-full absolute inset-0 filter blur-sm opacity-45">
-                    <defs>
-                      <linearGradient id="geoWaterSurface2" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#0369A1" stopOpacity="0" />
-                        <stop offset="40%" stopColor="#38BDF8" stopOpacity="0.6" />
-                        <stop offset="80%" stopColor="#67E8F9" stopOpacity="0.55" />
-                        <stop offset="100%" stopColor="#1E40AF" stopOpacity="0" />
-                      </linearGradient>
-                    </defs>
-                    <path 
-                      d="M-50,95 C90,140 220,55 360,115 C500,175 640,50 780,105 C920,160 1000,60 1060,95" 
-                      fill="none" 
-                      stroke="url(#geoWaterSurface2)" 
-                      strokeWidth="2.5" 
-                      strokeLinecap="round" 
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
-
             <div className="space-y-6 relative z-10">
               {/* 1. Hlavička (ikona + nadpis + podtitulek) */}
               <div className="pb-4 border-b border-white/5">
@@ -579,6 +472,7 @@ export const GeoExplainer: React.FC = () => {
           </div>
 
         </div>
+      </div>
 
         {/* Interactive Real-World Case Simulator */}
         <div className="rounded-xl border border-white/10 bg-[#0B101D] p-6 lg:p-8 space-y-6">

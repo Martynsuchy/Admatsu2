@@ -4,7 +4,7 @@ import { Lock, X, Shield, ArrowRight, KeyRound, CheckCircle2 } from 'lucide-reac
 
 export const LoginModal: React.FC = () => {
   const { isLoginModalOpen, setIsLoginModalOpen, login } = useCms();
-  const [email, setEmail] = useState('admin@admatsu.cz');
+  const [email, setEmail] = useState('admin@admatsu.com');
   const [password, setPassword] = useState('••••••••••••');
   const [isLoading, setIsLoading] = useState(false);
 
