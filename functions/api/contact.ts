@@ -165,14 +165,18 @@ export const onRequestPost = async (context: any) => {
 <html>
 <head>
   <meta charset="utf-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #060910; color: #f1f5f9; margin: 0; padding: 24px; }
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800;900&display=swap');
+    body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #060910; color: #f1f5f9; margin: 0; padding: 24px; }
     .container { max-width: 600px; margin: 0 auto; background-color: #0B101D; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
     .header { background-color: #070B14; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 28px 28px; text-align: left; }
-    .header-logo { font-size: 26px; font-weight: 900; letter-spacing: -0.6px; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1; }
+    .header-logo { font-family: 'Syne', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; color: #ffffff; line-height: 1; }
     .header-badge { margin-top: 8px; font-size: 11px; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 1.2px; }
-    .body { padding: 30px 28px; font-size: 14px; line-height: 1.6; color: #cbd5e1; }
-    .subject-headline { font-size: 20px; font-weight: 800; color: #ffffff; letter-spacing: -0.3px; margin-bottom: 16px; }
+    .body { padding: 30px 28px 36px 28px; font-size: 14px; line-height: 1.6; color: #cbd5e1; }
+    .subject-headline { font-family: 'Syne', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 21px; font-weight: 800; color: #ffffff; letter-spacing: -0.4px; margin-bottom: 18px; }
     .intro-box { font-size: 15px; color: #f8fafc; margin-bottom: 22px; }
     .highlight-card { background: rgba(6, 182, 212, 0.08); border-left: 3px solid #06b6d4; padding: 14px 18px; border-radius: 0 10px 10px 0; margin-bottom: 24px; color: #e2e8f0; font-size: 14px; }
     .details-card { background-color: #050811; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
@@ -226,46 +230,45 @@ export const onRequestPost = async (context: any) => {
         ` : ''}
       </div>
 
-      <p style="font-size: 12px; color: #94a3b8; margin-bottom: 24px;">
+      <p style="font-size: 12px; color: #94a3b8; margin-bottom: 32px;">
         💡 ${custHelpText}
       </p>
 
-      <!-- Horizontal Signature (Admatsu on left, separator, Martin Suchý on right, no blue line) -->
-      <table cellpadding="0" cellspacing="0" border="0" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.4; color: #f8fafc; border-collapse: collapse; margin-top: 26px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%;">
-        <tr>
-          <!-- Sloupec 1: Logo Admatsu nalevo -->
-          <td valign="middle" style="padding-right: 20px; text-align: left; white-space: nowrap;">
-            <div style="font-size: 24px; font-weight: 900; letter-spacing: -0.6px; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1;">
-              Admatsu
-            </div>
-          </td>
+      <!-- Horizontal Signature: Precision Centered with Syne font -->
+      <div style="margin-top: 36px; padding-top: 26px; border-top: 1px solid rgba(255,255,255,0.12);">
+        <table cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; width: 100%;">
+          <tr>
+            <!-- Sloupec 1: Logo Admatsu nalevo (vycentrované v originálním fontu Syne) -->
+            <td valign="middle" align="center" style="vertical-align: middle; padding: 0 24px 0 0; border-right: 1px solid rgba(255,255,255,0.15); white-space: nowrap; width: 1%;">
+              <div style="font-family: 'Syne', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; color: #ffffff; line-height: 1; margin: 0; padding: 0;">
+                Admatsu
+              </div>
+            </td>
 
-          <!-- Svislá oddělovací linka -->
-          <td style="width: 1px; background-color: rgba(255,255,255,0.15);" valign="middle"></td>
-
-          <!-- Sloupec 2: Samotný podpis napravo -->
-          <td valign="middle" style="padding-left: 20px;">
-            <div style="font-size: 15px; font-weight: 800; color: #ffffff; letter-spacing: -0.2px;">
-              Martin Suchý
-            </div>
-            <div style="font-size: 11px; font-weight: 600; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.6px; margin-top: 1px;">
-              Founder &amp; Web Architect
-            </div>
-            <div style="margin-top: 6px; font-size: 12px; color: #cbd5e1; line-height: 1.5;">
-              <span style="color: #64748b; font-weight: 600;">M:</span> 
-              <a href="tel:+420604531377" style="color: #f1f5f9; text-decoration: none; font-weight: 600;">+420 604 531 377</a>
-              <span style="color: #06b6d4; padding: 0 6px; font-weight: bold;">•</span>
-              <span style="color: #64748b; font-weight: 600;">E:</span> 
-              <a href="mailto:info@admatsu.com" style="color: #38bdf8; text-decoration: none; font-weight: 600;">info@admatsu.com</a>
-              <br>
-              <span style="color: #64748b; font-weight: 600;">W:</span> 
-              <a href="https://admatsu.com" target="_blank" style="color: #06b6d4; text-decoration: none; font-weight: 700;">admatsu.com</a>
-              <span style="color: #06b6d4; padding: 0 6px; font-weight: bold;">•</span>
-              <span style="color: #94a3b8; font-size: 11px;">Prague, Czechia · Remote EU</span>
-            </div>
-          </td>
-        </tr>
-      </table>
+            <!-- Sloupec 2: Samotný podpis napravo (vycentrovaný) -->
+            <td valign="middle" style="vertical-align: middle; padding: 0 0 0 24px;">
+              <div style="font-size: 15px; font-weight: 700; color: #ffffff; letter-spacing: -0.2px; line-height: 1.2; margin: 0;">
+                Martin Suchý
+              </div>
+              <div style="font-size: 11px; font-weight: 600; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 3px; line-height: 1.2;">
+                Founder &amp; Web Architect
+              </div>
+              <div style="margin-top: 8px; font-size: 12px; color: #cbd5e1; line-height: 1.5;">
+                <span style="color: #64748b; font-weight: 600;">M:</span> 
+                <a href="tel:+420604531377" style="color: #f1f5f9; text-decoration: none; font-weight: 600;">+420 604 531 377</a>
+                <span style="color: #06b6d4; padding: 0 6px; font-weight: bold;">•</span>
+                <span style="color: #64748b; font-weight: 600;">E:</span> 
+                <a href="mailto:info@admatsu.com" style="color: #38bdf8; text-decoration: none; font-weight: 600;">info@admatsu.com</a>
+                <br>
+                <span style="color: #64748b; font-weight: 600;">W:</span> 
+                <a href="https://admatsu.com" target="_blank" style="color: #06b6d4; text-decoration: none; font-weight: 700;">admatsu.com</a>
+                <span style="color: #06b6d4; padding: 0 6px; font-weight: bold;">•</span>
+                <span style="color: #94a3b8; font-size: 11px;">Prague, Czechia · Remote EU</span>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
 
     <div class="footer">
