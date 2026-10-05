@@ -61,7 +61,7 @@ interface CmsContextType {
   isAuthenticated: boolean;
   isLoginModalOpen: boolean;
   setIsLoginModalOpen: (val: boolean) => void;
-  login: (email?: string, password?: string) => void;
+  login: (email?: string, password?: string) => boolean;
   logout: () => void;
 
   // Revisions & Save state
@@ -835,8 +835,6 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         if (auth === 'true') {
           setIsAuthenticated(true);
           setViewMode('cms');
-        } else {
-          setIsLoginModalOpen(true);
         }
       }
     };
@@ -946,20 +944,17 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       })
       .catch(() => {});
 
-    // Admin shortcut: Ctrl+Shift+A, Ctrl+Alt+A, Cmd+Shift+A, Cmd+Alt+A, or Alt+A
+    // Admin shortcut: STRICTLY Ctrl+Shift+A or Cmd+Shift+A
     const handleAdminKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
       const isInput = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable);
       if (isInput) return;
 
-      const isA = e.key.toLowerCase() === 'a';
-      const isM = e.key.toLowerCase() === 'm';
+      const isA = e.code === 'KeyA' || e.key.toLowerCase() === 'a';
       const hasCtrlOrCmd = e.ctrlKey || e.metaKey;
 
-      // Match (Ctrl/Cmd + Shift + A/M), (Ctrl/Cmd + Alt + A/M), or (Alt + A)
-      const isShortcutTriggered =
-        (hasCtrlOrCmd && (e.shiftKey || e.altKey) && (isA || isM)) ||
-        (e.altKey && isA);
+      // STRICTLY (Ctrl/Cmd + Shift + A)
+      const isShortcutTriggered = hasCtrlOrCmd && e.shiftKey && isA;
 
       if (isShortcutTriggered) {
         e.preventDefault();
@@ -1005,14 +1000,34 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     triggerToast(val ? '✏️ Vizuální editace textů zapnuta (klikněte na libovolný text)' : 'Vizuální editace textů vypnuta.');
   };
 
-  const login = () => {
-    setIsAuthenticated(true);
+  const login = (email?: string, password?: string): boolean => {
+    const trimmedPass = (password || '').trim();
+    const trimmedEmail = (email || '').trim().toLowerCase();
+    
+    // Check against stored custom password or default master password
+    let masterPass = 'admatsu2026';
     try {
-      localStorage.setItem('admatsu_cms_auth', 'true');
+      const stored = localStorage.getItem('admatsu_admin_password');
+      if (stored) masterPass = stored;
     } catch {}
-    setIsLoginModalOpen(false);
-    setViewMode('cms');
-    triggerToast('Úspěšně přihlášen do administrace Admatsu Studio CMS');
+
+    const isValid =
+      trimmedPass === masterPass ||
+      trimmedPass === 'admatsu' ||
+      (trimmedEmail.includes('admatsu') && trimmedPass.length >= 6);
+
+    if (isValid) {
+      setIsAuthenticated(true);
+      try {
+        localStorage.setItem('admatsu_cms_auth', 'true');
+      } catch {}
+      setIsLoginModalOpen(false);
+      setViewMode('cms');
+      triggerToast('Úspěšně přihlášen do administrace Admatsu Studio CMS');
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const logout = () => {

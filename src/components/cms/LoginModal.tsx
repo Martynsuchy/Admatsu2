@@ -1,22 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCms } from '../../context/CmsContext';
-import { Lock, X, Shield, ArrowRight, KeyRound, CheckCircle2 } from 'lucide-react';
+import { Lock, X, Shield, ArrowRight, AlertCircle } from 'lucide-react';
 
 export const LoginModal: React.FC = () => {
   const { isLoginModalOpen, setIsLoginModalOpen, login } = useCms();
-  const [email, setEmail] = useState('admin@admatsu.com');
-  const [password, setPassword] = useState('••••••••••••');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (isLoginModalOpen) {
+      setEmail('');
+      setPassword('');
+      setErrorMessage('');
+    }
+  }, [isLoginModalOpen]);
 
   if (!isLoginModalOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage('');
+
+    if (!email.trim() || !password.trim()) {
+      setErrorMessage('Vyplňte prosím přihlašovací jméno i heslo.');
+      return;
+    }
+
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      login(email, password);
-    }, 400);
+      const success = login(email, password);
+      if (!success) {
+        setErrorMessage('Nesprávné přihlašovací jméno nebo heslo.');
+      }
+    }, 300);
   };
 
   return (
@@ -46,28 +65,27 @@ export const LoginModal: React.FC = () => {
           </div>
         </div>
 
-        {/* Demo Helper Callout */}
-        <div className="mb-6 p-3 rounded-xl bg-cyan-950/20 border border-cyan-500/20 text-xs text-slate-300 space-y-1">
-          <div className="font-semibold text-cyan-300 flex items-center gap-1.5">
-            <KeyRound className="h-3.5 w-3.5" />
-            <span>Předvyplněné demo přihlášení</span>
+        {/* Error message if any */}
+        {errorMessage && (
+          <div className="mb-4 p-3 rounded-xl bg-red-950/40 border border-red-500/30 text-xs text-red-300 flex items-center gap-2 animate-in fade-in duration-150">
+            <AlertCircle className="h-4 w-4 text-red-400 shrink-0" />
+            <span>{errorMessage}</span>
           </div>
-          <p className="text-[11px] text-slate-400 leading-relaxed">
-            Na reálném webu je administrace přístupná pouze pro vás. Pro otestování stačí kliknout na tlačítko níže.
-          </p>
-        </div>
+        )}
 
         {/* Login Form */}
         <form onSubmit={handleSubmit} className="space-y-4 text-xs">
           <div>
             <label className="block font-semibold text-slate-300 mb-1.5">
-              Přihlašovací e-mail
+              Přihlašovací e-mail nebo jméno
             </label>
             <input
-              type="email"
+              type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg bg-black/50 border border-white/15 px-3.5 py-2.5 text-white placeholder-slate-500 focus:border-cyan-400 focus:outline-none font-mono"
+              placeholder="Zadejte přihlašovací jméno / e-mail"
+              className="w-full rounded-lg bg-black/50 border border-white/15 px-3.5 py-2.5 text-white placeholder-slate-500 focus:border-cyan-400 focus:outline-none"
+              autoFocus
               required
             />
           </div>
@@ -77,13 +95,13 @@ export const LoginModal: React.FC = () => {
               <label className="font-semibold text-slate-300">
                 Heslo správce
               </label>
-              <span className="text-[10px] text-cyan-400/80">2FA zabezpečení</span>
             </div>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg bg-black/50 border border-white/15 px-3.5 py-2.5 text-white placeholder-slate-500 focus:border-cyan-400 focus:outline-none font-mono"
+              placeholder="Zadejte heslo"
+              className="w-full rounded-lg bg-black/50 border border-white/15 px-3.5 py-2.5 text-white placeholder-slate-500 focus:border-cyan-400 focus:outline-none"
               required
             />
           </div>
@@ -110,7 +128,7 @@ export const LoginModal: React.FC = () => {
             <Shield className="h-3.5 w-3.5 text-emerald-400" />
             <span>256-bit TLS šifrování</span>
           </span>
-          <span>Admatsu Engine v2.4</span>
+          <span>Admatsu Engine</span>
         </div>
       </div>
     </div>
