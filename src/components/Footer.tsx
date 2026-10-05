@@ -52,7 +52,7 @@ export const Footer: React.FC = () => {
           <div className="md:col-span-5 space-y-3">
             <span className="text-xl font-bold tracking-tight text-white font-display block">
               <EditableText
-                value={content.contact.companyName}
+                value={content.contact?.companyName || 'ADMATSU'}
                 onChange={(val) => updateContact({ companyName: val })}
                 label="Patička: Název firmy"
               />
@@ -60,7 +60,7 @@ export const Footer: React.FC = () => {
             <EditableText
               as="p"
               multiline
-              value={content.footer.aboutText}
+              value={content.footer?.aboutText || ''}
               onChange={(val) => updateFooter({ aboutText: val })}
               className="text-xs text-slate-400 leading-relaxed max-w-sm block"
               label="Patička: O firmě"
@@ -68,13 +68,13 @@ export const Footer: React.FC = () => {
             <div className="text-[11px] text-slate-400 font-mono">
               <span>{currentLang === 'de' ? 'Registernummer (IdNr.): ' : currentLang === 'en' ? 'Company ID: ' : 'IČO: '}</span>
               <EditableText
-                value={content.contact.ico}
+                value={content.contact?.ico || ''}
                 onChange={(val) => updateContact({ ico: val })}
                 label="Patička: IČO"
               />
               <span> · </span>
               <EditableText
-                value={content.footer.registryNote || 'Spisová značka C 400085/MSPH vedená u Městského soudu v Praze'}
+                value={content.footer?.registryNote || 'Spisová značka C 400085/MSPH vedená u Městského soudu v Praze'}
                 onChange={(val) => updateFooter({ registryNote: val })}
                 label="Patička: Rejstřík"
               />
@@ -85,7 +85,7 @@ export const Footer: React.FC = () => {
           <div className="md:col-span-3 space-y-2">
             <div className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
               <EditableText
-                value={content.footer.linksTitle || 'Rychlé odkazy'}
+                value={content.footer?.linksTitle || 'Rychlé odkazy'}
                 onChange={(val) => updateFooter({ linksTitle: val })}
                 label="Patička: Titulek odkazů"
               />
@@ -116,7 +116,7 @@ export const Footer: React.FC = () => {
           <div className="md:col-span-4 space-y-2">
             <div className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
               <EditableText
-                value={content.footer.contactTitle || 'Kontakt & Sídlo'}
+                value={content.footer?.contactTitle || 'Kontakt & Sídlo'}
                 onChange={(val) => updateFooter({ contactTitle: val })}
                 label="Patička: Titulek kontaktu"
               />
@@ -124,29 +124,29 @@ export const Footer: React.FC = () => {
             <div className="space-y-1 text-xs text-slate-400">
               <div className="text-white font-medium">
                 <EditableText
-                  value={content.contact.companyName}
+                  value={content.contact?.companyName || 'ADMATSU'}
                   onChange={(val) => updateContact({ companyName: val })}
                   label="Patička: Firma kontakt"
                 />
               </div>
               <div>
                 <EditableText
-                  value={content.contact.address}
+                  value={content.contact?.address || ''}
                   onChange={(val) => updateContact({ address: val })}
                   label="Patička: Adresa"
                 />
               </div>
               <div>
                 <EditableText
-                  value={content.contact.city}
+                  value={content.contact?.city || ''}
                   onChange={(val) => updateContact({ city: val })}
                   label="Patička: Město"
                 />
               </div>
               <div className="pt-2">
-                <a href={`mailto:${content.contact.email}`} className="text-cyan-400 hover:underline">
+                <a href={`mailto:${content.contact?.email || 'info@admatsu.com'}`} className="text-cyan-400 hover:underline">
                   <EditableText
-                    value={content.contact.email}
+                    value={content.contact?.email || 'info@admatsu.com'}
                     onChange={(val) => updateContact({ email: val })}
                     label="Patička: E-mail"
                   />
@@ -157,12 +157,12 @@ export const Footer: React.FC = () => {
 
         </div>
 
-        {/* Bottom Bar: Quiet legal notice + subtle login */}
+        {/* Bottom Bar: Quiet legal notice */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
           <div>
-            <span>© {currentYear} {content.contact.companyName}. </span>
+            <span>© {currentYear} {content.contact?.companyName || 'ADMATSU'}. </span>
             <EditableText
-              value={content.footer.copyrightNotice}
+              value={content.footer?.copyrightNotice || ''}
               onChange={(val) => updateFooter({ copyrightNotice: val })}
               label="Patička copyright"
             />
@@ -180,7 +180,7 @@ export const Footer: React.FC = () => {
               className="hover:text-cyan-400 underline-offset-4 hover:underline transition-colors cursor-pointer text-left"
             >
               <EditableText
-                value={content.footer.privacyText || 'Ochrana osobních údajů'}
+                value={content.footer?.privacyText || 'Ochrana osobních údajů'}
                 onChange={(val) => updateFooter({ privacyText: val })}
                 label="Patička: GDPR"
               />
@@ -196,7 +196,7 @@ export const Footer: React.FC = () => {
               className="hover:text-cyan-400 underline-offset-4 hover:underline transition-colors cursor-pointer text-left"
             >
               <EditableText
-                value={content.footer.termsText || 'Všeobecné obchodní podmínky'}
+                value={content.footer?.termsText || 'Všeobecné obchodní podmínky'}
                 onChange={(val) => updateFooter({ termsText: val })}
                 label="Patička: Podmínky"
               />

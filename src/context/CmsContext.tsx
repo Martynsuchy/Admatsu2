@@ -757,10 +757,10 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         ...ENGLISH_CONTENT,
         contact: {
           ...ENGLISH_CONTENT.contact,
-          companyName: content.contact.companyName,
-          address: content.contact.address,
-          city: content.contact.city,
-          ico: content.contact.ico,
+          companyName: content.contact?.companyName || ENGLISH_CONTENT.contact.companyName,
+          address: content.contact?.address || ENGLISH_CONTENT.contact.address,
+          city: content.contact?.city || ENGLISH_CONTENT.contact.city,
+          ico: content.contact?.ico || ENGLISH_CONTENT.contact.ico,
         },
       };
     }
@@ -769,10 +769,10 @@ export const CmsProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         ...GERMAN_CONTENT,
         contact: {
           ...GERMAN_CONTENT.contact,
-          companyName: content.contact.companyName,
-          address: content.contact.address,
-          city: content.contact.city,
-          ico: content.contact.ico,
+          companyName: content.contact?.companyName || GERMAN_CONTENT.contact.companyName,
+          address: content.contact?.address || GERMAN_CONTENT.contact.address,
+          city: content.contact?.city || GERMAN_CONTENT.contact.city,
+          ico: content.contact?.ico || GERMAN_CONTENT.contact.ico,
         },
       };
     }

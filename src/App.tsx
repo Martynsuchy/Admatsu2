@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { CmsProvider, useCms } from './context/CmsContext';
 import { CmsAdminBar } from './components/cms/CmsAdminBar';
 import { CmsDashboard } from './components/cms/CmsDashboard';
@@ -14,8 +14,67 @@ import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { scrollToTarget } from './utils/scrollHelper';
 
+// Global error boundary to prevent any blank black screen
+interface ErrorBoundaryProps {
+  children: ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error?: Error;
+}
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  public state: ErrorBoundaryState = {
+    hasError: false,
+  };
+
+  public static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
+  }
+
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('Admatsu App ErrorBoundary caught an error:', error, errorInfo);
+  }
+
+  private handleReset = () => {
+    try {
+      localStorage.removeItem('admatsu_cms_content');
+      localStorage.removeItem('admatsu_cms_inline');
+      localStorage.removeItem('admatsu_cms_auth');
+    } catch {}
+    window.location.href = '/';
+  };
+
+  public render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen bg-[#070B12] text-slate-100 flex flex-col items-center justify-center p-6 text-center font-sans">
+          <div className="max-w-md p-8 rounded-2xl bg-[#0B101D] border border-white/15 shadow-2xl">
+            <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center mx-auto mb-4 font-bold text-xl">
+              A
+            </div>
+            <h2 className="text-xl font-bold text-white mb-2">Nastala drobná chyba zobrazení</h2>
+            <p className="text-sm text-slate-400 mb-6 leading-relaxed">
+              Omlouváme se, web se automaticky obnoví do výchozího stavu po stisknutí tlačítka níže.
+            </p>
+            <button
+              onClick={this.handleReset}
+              className="w-full rounded-xl bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-cyan-400 transition-all cursor-pointer shadow-lg shadow-cyan-500/20 active:scale-98"
+            >
+              Obnovit načtení webu
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
 function MainApp() {
-  const { viewMode } = useCms();
+  const { viewMode, isAuthenticated } = useCms();
 
   const scrollToSection = (id: string) => {
     scrollToTarget(id);
@@ -70,10 +129,11 @@ function MainApp() {
       {/* Security Login Dialog Modal */}
       <LoginModal />
 
-      {/* View router */}
-      {viewMode === 'cms' && <CmsDashboard />}
+      {/* View router: When in CMS mode and authenticated */}
+      {viewMode === 'cms' && isAuthenticated && <CmsDashboard />}
 
-      {viewMode === 'split' && (
+      {/* View router: When in Split mode and authenticated */}
+      {viewMode === 'split' && isAuthenticated && (
         <div className="grid grid-cols-1 lg:grid-cols-2 flex-1 h-[calc(100vh-45px)] overflow-hidden">
           <div className="overflow-y-auto border-r border-white/10 bg-[#070B14]">
             <CmsDashboard />
@@ -84,15 +144,18 @@ function MainApp() {
         </div>
       )}
 
-      {viewMode === 'web' && renderWebsite(false)}
+      {/* Default Website View: Always renders for public visitors or when not in full CMS mode */}
+      {(viewMode === 'web' || !isAuthenticated) && renderWebsite(false)}
     </div>
   );
 }
 
 export default function App() {
   return (
-    <CmsProvider>
-      <MainApp />
-    </CmsProvider>
+    <ErrorBoundary>
+      <CmsProvider>
+        <MainApp />
+      </CmsProvider>
+    </ErrorBoundary>
   );
 }
