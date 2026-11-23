@@ -3,8 +3,13 @@ import { useCms } from '../context/CmsContext';
 import { EditableText } from './cms/EditableText';
 import { LegalModal, LegalDocType } from './LegalModal';
 import { scrollToTarget } from '../utils/scrollHelper';
+import { ActivePageTab } from './OverviewLanding';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onChangePage?: (page: ActivePageTab) => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onChangePage }) => {
   const currentYear = 2026;
   const { content, updateFooter, updateContact, isInlineEditing, currentLang } = useCms();
   const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
@@ -12,30 +17,30 @@ export const Footer: React.FC = () => {
 
   const navLinksByLang = {
     cs: [
-      { label: 'Služby & modernizace webů', href: '#sluzby' },
-      { label: 'Srovnání zastaralý vs. moderní web', href: '#srovnani' },
-      { label: 'Technické SEO a GEO', href: '#seo-geo' },
-      { label: 'Jak probíhá spolupráce', href: '#proces' },
-      { label: 'Kalkulačka ceny webu', href: '#kalkulacka' },
-      { label: 'Časté dotazy (FAQ)', href: '#faq' },
+      { label: 'Úvodní přehled (Web & AI Outreach)', tab: 'overview' as ActivePageTab },
+      { label: 'Divize Web & GEO Engineering', tab: 'web' as ActivePageTab },
+      { label: 'Divize AI Outreach (1 000+ B2B kontaktů)', tab: 'outreach' as ActivePageTab },
+      { label: 'Kalkulátor dosahu AI Outreach', href: '#outreach-kalkulator', tab: 'outreach' as ActivePageTab },
+      { label: 'Srovnání zastaralý vs. moderní web', href: '#srovnani', tab: 'web' as ActivePageTab },
+      { label: 'Technické SEO a GEO', href: '#seo-geo', tab: 'web' as ActivePageTab },
       { label: 'Nezávazný kontakt', href: '#kontakt' },
     ],
     en: [
-      { label: 'Services & Web Modernization', href: '#sluzby' },
-      { label: 'Outdated vs. Modern Web', href: '#srovnani' },
-      { label: 'Technical SEO & GEO', href: '#seo-geo' },
-      { label: 'Development Process', href: '#proces' },
-      { label: 'Price Calculator', href: '#kalkulacka' },
-      { label: 'Frequently Asked Questions', href: '#faq' },
+      { label: 'Overview (Web & AI Outreach)', tab: 'overview' as ActivePageTab },
+      { label: 'Web & GEO Engineering Division', tab: 'web' as ActivePageTab },
+      { label: 'AI Outreach Division (1,000s of B2B Leads)', tab: 'outreach' as ActivePageTab },
+      { label: 'AI Outreach Volume Simulator', href: '#outreach-kalkulator', tab: 'outreach' as ActivePageTab },
+      { label: 'Outdated vs. Modern Web', href: '#srovnani', tab: 'web' as ActivePageTab },
+      { label: 'Technical SEO & GEO', href: '#seo-geo', tab: 'web' as ActivePageTab },
       { label: 'Free Consultation', href: '#kontakt' },
     ],
     de: [
-      { label: 'Leistungen & Modernisierung', href: '#sluzby' },
-      { label: 'Veraltete vs. moderne Website', href: '#srovnani' },
-      { label: 'Technisches SEO & GEO', href: '#seo-geo' },
-      { label: 'Entwicklungsablauf', href: '#proces' },
-      { label: 'Preiskalkulator', href: '#kalkulacka' },
-      { label: 'Häufig gestellte Fragen (FAQ)', href: '#faq' },
+      { label: 'Übersicht (Web & AI Outreach)', tab: 'overview' as ActivePageTab },
+      { label: 'Division Web & GEO Engineering', tab: 'web' as ActivePageTab },
+      { label: 'Division AI Outreach (1.000+ B2B-Leads)', tab: 'outreach' as ActivePageTab },
+      { label: 'AI-Outreach-Reichweitenrechner', href: '#outreach-kalkulator', tab: 'outreach' as ActivePageTab },
+      { label: 'Veraltete vs. moderne Website', href: '#srovnani', tab: 'web' as ActivePageTab },
+      { label: 'Technisches SEO & GEO', href: '#seo-geo', tab: 'web' as ActivePageTab },
       { label: 'Unverbindliche Anfrage', href: '#kontakt' },
     ],
   };
@@ -94,14 +99,23 @@ export const Footer: React.FC = () => {
               {navLinks.map((link, idx) => (
                 <li key={idx}>
                   <a
-                    href={link.href}
+                    href={link.href || `#${link.tab || ''}`}
                     onClick={(e) => {
                       if (isInlineEditing) {
                         e.preventDefault();
                         return;
                       }
                       e.preventDefault();
-                      scrollToTarget(link.href);
+                      if (link.tab && onChangePage) {
+                        onChangePage(link.tab);
+                        if (link.href) {
+                          setTimeout(() => scrollToTarget(link.href!), 80);
+                        } else {
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                      } else if (link.href) {
+                        scrollToTarget(link.href);
+                      }
                     }}
                     className="hover:text-cyan-400 transition-colors cursor-pointer"
                   >

@@ -440,7 +440,7 @@ const DEFAULT_CONTENT: SiteContent = {
     submitButtonText: 'Odeslat nezávaznou poptávku',
     submitSubtext: 'Žádné závazky ani spam. Ozveme se vám s konkrétním návrhem.',
     successTitle: 'Děkujeme za vaši zprávu!',
-    successDesc: 'Poptávku jsme v pořádku přijali a byla propsána do CMS administrace. Ozveme se vám, abychom nezávazně probrali vaše představy a možnosti řešení.',
+    successDesc: 'Poptávku jsme v pořádku přijali. Ozveme se vám v nejbližší době, abychom nezávazně probrali vaše představy a možnosti řešení.',
     resetButtonText: 'Odeslat další dotaz',
     directEmailLabel: 'Přímý e-mail:',
     directPhoneLabel: 'Telefonní číslo:',
@@ -459,7 +459,7 @@ const DEFAULT_CONTENT: SiteContent = {
     court: 'Městský soud v Praze, oddíl C, vložka 400085',
   },
   footer: {
-    aboutText: 'ADMATSU s.r.o. — Moderní webové inženýrství, technické SEO a GEO připravenost pro AI vyhledávače. Tvoříme rychlé, čisté a bezpečné weby bez zastaralého balastu.',
+    aboutText: 'ADMATSU s.r.o. — Moderní webové inženýrství (SEO & GEO) a škálovatelný B2B AI Outreach. Stavíme bleskové firemní weby bez zastaralého balastu a provozujeme autonomní kampaně oslovující tisíce decision-makerů měsíčně.',
     copyrightNotice: 'Všechna práva vyhrazena.',
     linksTitle: 'Rychlé odkazy',
     contactTitle: 'Kontakt & Sídlo',

@@ -474,7 +474,7 @@ export const ENGLISH_CONTENT: SiteContent = {
   },
   footer: {
     aboutText:
-      'ADMATSU s.r.o. — Modern web engineering, technical SEO, and GEO readiness for next-gen AI search engines. We build fast, clean, and secure web solutions without legacy bloat.',
+      'ADMATSU s.r.o. — Next-Gen Web & GEO Engineering and scalable B2B AI Outreach. We engineer ultra-fast corporate websites and operate autonomous outreach systems reaching thousands of decision-makers monthly.',
     copyrightNotice: 'All rights reserved.',
     linksTitle: 'Quick Links',
     contactTitle: 'Contact & Office',
@@ -975,7 +975,7 @@ export const GERMAN_CONTENT: SiteContent = {
   },
   footer: {
     aboutText:
-      'ADMATSU s.r.o. — Modernes Web-Engineering, technisches SEO und GEO-Bereitschaft für KI-Suchmaschinen. Wir bauen schnelle, saubere und sichere Websites ohne Altlasten.',
+      'ADMATSU s.r.o. — Modernes Web- & GEO-Engineering und skalierbarer B2B AI Outreach. Wir entwickeln blitzschnelle Unternehmenswebsites und betreiben autonome Outreach-Kampagnen an Tausende Entscheider monatlich.',
     copyrightNotice: 'Alle Rechte vorbehalten.',
     linksTitle: 'Schnellzugriff',
     contactTitle: 'Kontakt & Sitz',

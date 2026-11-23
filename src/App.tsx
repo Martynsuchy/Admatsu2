@@ -1,9 +1,11 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import React, { Component, ErrorInfo, ReactNode, useState } from 'react';
 import { CmsProvider, useCms } from './context/CmsContext';
 import { CmsAdminBar } from './components/cms/CmsAdminBar';
 import { CmsDashboard } from './components/cms/CmsDashboard';
 import { LoginModal } from './components/cms/LoginModal';
 import { Navbar } from './components/Navbar';
+import { OverviewLanding, ActivePageTab } from './components/OverviewLanding';
+import { AiOutreachLanding } from './components/AiOutreachLanding';
 import { Hero } from './components/Hero';
 import { Services } from './components/Services';
 import { GeoExplainer } from './components/GeoExplainer';
@@ -75,9 +77,37 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
 function MainApp() {
   const { viewMode, isAuthenticated } = useCms();
+  const [activePage, setActivePage] = useState<ActivePageTab>('overview');
+  const [preloadedServiceCategory, setPreloadedServiceCategory] = useState<'web' | 'outreach' | 'combined'>('web');
+  const [preloadedMessage, setPreloadedMessage] = useState<string>('');
 
   const scrollToSection = (id: string) => {
     scrollToTarget(id);
+  };
+
+  const handleSelectServiceAndScroll = (
+    serviceKey: 'web' | 'outreach' | 'combined',
+    customNote?: string
+  ) => {
+    setPreloadedServiceCategory(serviceKey);
+    if (customNote) {
+      setPreloadedMessage(customNote);
+    }
+    requestAnimationFrame(() => {
+      scrollToTarget('kontakt');
+    });
+  };
+
+  const handleChangePage = (page: ActivePageTab) => {
+    setActivePage(page);
+    setPreloadedMessage('');
+    if (page === 'outreach') {
+      setPreloadedServiceCategory('outreach');
+    } else if (page === 'web') {
+      setPreloadedServiceCategory('web');
+    } else {
+      setPreloadedServiceCategory('combined');
+    }
   };
 
   const renderWebsite = (isSplit = false) => (
@@ -86,38 +116,55 @@ function MainApp() {
         isSplit ? 'border-l border-cyan-500/30 overflow-y-auto max-h-screen shadow-2xl' : ''
       }`}
     >
-      {/* 1-Row 3-Zone Clean Top Bar */}
-      <Navbar onOpenConsultation={() => scrollToSection('kontakt')} />
+      {/* 1-Row 3-Zone Clean Top Bar with 3 Switchable Divisions */}
+      <Navbar
+        activePage={activePage}
+        onChangePage={handleChangePage}
+        onOpenConsultation={() => scrollToSection('kontakt')}
+      />
 
       {/* Main Content Flow */}
       <main className="flex-1">
-        {/* Hero Section */}
-        <Hero
-          onOpenConsultation={() => scrollToSection('kontakt')}
-          onExploreComparison={() => scrollToSection('srovnani')}
+        {/* TAB 1: OVERVIEW HUB (Both Web & GEO Engineering + AI Outreach) */}
+        {activePage === 'overview' && (
+          <OverviewLanding
+            onNavigateTab={handleChangePage}
+            onSelectServiceAndScroll={handleSelectServiceAndScroll}
+          />
+        )}
+
+        {/* TAB 2: WEB & GEO ENGINEERING (Original full web development landing page) */}
+        {activePage === 'web' && (
+          <>
+            <Hero
+              onOpenConsultation={() => handleSelectServiceAndScroll('web')}
+              onExploreComparison={() => scrollToSection('srovnani')}
+            />
+            <Services onOpenConsultation={() => handleSelectServiceAndScroll('web')} />
+            <TechComparison onOpenConsultation={() => handleSelectServiceAndScroll('web')} />
+            <GeoExplainer />
+            <ProcessSection onOpenConsultation={() => handleSelectServiceAndScroll('web')} />
+            <FaqSection />
+          </>
+        )}
+
+        {/* TAB 3: AI OUTREACH (Dedicated B2B AI Outreach at scale landing page) */}
+        {activePage === 'outreach' && (
+          <AiOutreachLanding
+            onSelectOutreachWithNote={(note) => handleSelectServiceAndScroll('outreach', note)}
+          />
+        )}
+
+        {/* Shared Context-Aware Contact Form & Company Details at bottom of every page */}
+        <ContactSection
+          activePage={activePage}
+          preloadedMessage={preloadedMessage}
+          preloadedServiceCategory={preloadedServiceCategory}
         />
-
-        {/* Services Bento */}
-        <Services onOpenConsultation={() => scrollToSection('kontakt')} />
-
-        {/* Apple-Style Pinned Comparison Slider: Zastaralý web vs. Moderní web */}
-        <TechComparison onOpenConsultation={() => scrollToSection('kontakt')} />
-
-        {/* SEO vs GEO Plain Explainer & Streamlined Interactive Simulator */}
-        <GeoExplainer />
-
-        {/* 5-Step Delivery Process (7-14 dní od předání podkladů) */}
-        <ProcessSection onOpenConsultation={() => scrollToSection('kontakt')} />
-
-        {/* Frequently Asked Questions */}
-        <FaqSection />
-
-        {/* Contact Form & Company Details */}
-        <ContactSection />
       </main>
 
       {/* Clean Public Footer */}
-      <Footer />
+      <Footer onChangePage={handleChangePage} />
     </div>
   );
 
