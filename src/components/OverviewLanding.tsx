@@ -30,7 +30,7 @@ export const OverviewLanding: React.FC<OverviewLandingProps> = ({
       headlinePart1: 'Inženýrství moderních webů',
       headlineAccent: '& škálovatelný AI Outreach.',
       subheadline:
-        'Spojujeme dvě klíčové disciplíny digitálního růstu pod jednu střechu. Stavíme bleskové firemní weby připravené na vyhledávače i AI odpovídače (GEO) a paralelně provozujeme autonomní B2B AI Outreach systémy, které osloví tisíce relevantních decision-makerů měsíčně.',
+        'Spojujeme dvě klíčové disciplíny digitálního růstu pod jednu střechu. Stavíme bleskové firemní weby připravené pro Google i AI vyhledávače (ChatGPT, Perplexity — GEO) a paralelně provozujeme autonomní B2B AI Outreach systémy, které osloví tisíce relevantních decision-makerů měsíčně.',
       primaryCta: 'Nezávazná konzultace růstu',
       secondaryCtaWeb: 'Prozkoumat Web & GEO',
       secondaryCtaOutreach: 'Prozkoumat AI Outreach',
